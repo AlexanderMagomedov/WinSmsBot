@@ -48,7 +48,8 @@ def create_other_keyboard() -> InlineKeyboardMarkup:
     kb_builder = InlineKeyboardBuilder()
     # Наполняем клавиатуру кнопками-закладками в порядке возрастания
     kb_builder.row(
-        InlineKeyboardButton(text=f'Кол-во номеров на СХ', callback_data=f'/SH_Numbers'), width=1
+        InlineKeyboardButton(text=f'Кол-во номеров на СХ', callback_data=f'/SH_Numbers'),
+        InlineKeyboardButton(text=f'Кол-во номеров в ЧС', callback_data=f'/blacklist'),width=1
     )
     kb_builder.row(InlineKeyboardButton(text=LEXICON['/back'], callback_data='/start'))
     return kb_builder.as_markup()

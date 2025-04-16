@@ -129,7 +129,7 @@ async def process_sh_numbers(callback: CallbackQuery):
 
 
 
-#Функция получения баланса MTT
+#Функция получения кол-ва номеров на СХ
 async def my_request_numbers() -> str:
     url = config.my_url + '/internal_services/sms_hub/actions'
     data = {"action": "GET_SERVICES", "key": config.my_key}
@@ -140,3 +140,22 @@ async def my_request_numbers() -> str:
                 return f"Сервис временно не доступен!!!"
             json_data = await response.json()
             return json_data["countryList"][0]["operatorMap"]["mtt_virtual"]["apd"]
+
+
+# Эт X срабатывает на нажатие инлайн-кнопки "Кол-во номеров на СХ" и возвращать в главное меню
+@router.callback_query(F.data == '/blacklist')
+async def process_sh_numbers(callback: CallbackQuery):
+    await callback.message.edit_text(text=f'Кол-во номеров в ЧС {await my_black_list_numbers()} шт.',
+                                     reply_markup=create_back_to_other())
+    await callback.answer()
+
+#Функция получения баланса MTT
+async def my_black_list_numbers() -> str:
+    url = config.my_url + '/internal_services/numbers/get_blacklist'
+
+    async with aiohttp.ClientSession() as session:
+        async with session.post(url) as response:
+            if response.status != 200:
+                return f"Сервис временно не доступен!!!"
+            json_data = await response.json()
+            return str(json_data["count"])
