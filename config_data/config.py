@@ -30,6 +30,8 @@ class Config:
     mtt_url_count: str
     mtt_login: str
     mtt_password: str
+    my_url: str
+    my_key: str
 
 
 
@@ -53,4 +55,6 @@ def load_config() -> Config:
                   mtt_url_count=os.getenv('MTT_URL_COUNT'),
                   mtt_login=os.getenv('MTT_LOGIN'),
                   mtt_password=os.getenv('MTT_PASSWORD'),
+                  my_url=os.getenv('MY_URL'),
+                  my_key=os.getenv('MY_KEY'),
                   )
