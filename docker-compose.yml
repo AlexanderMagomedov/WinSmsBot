@@ -1,13 +1,24 @@
-version: '3.9'
+version: "3.8"
 
 services:
-  bot:
-    build: .
-    container_name: telegram_bot
-    restart: unless-stopped
+  telegram_bot:
+    image: registry.gitlab.com/username/projectname/bot:latest  # замените на своё имя образа
+    deploy:
+      restart_policy:
+        condition: on-failure
     env_file:
       - $env
 
-    volumes:
-      - .:/app
-    command: python startbot.py
+#version: '3.9'
+#
+#services:
+#  bot:
+#    build: .
+#    container_name: telegram_bot
+#    restart: unless-stopped
+#    env_file:
+#      - $env
+#
+#    volumes:
+#      - .:/app
+#    command: python startbot.py
