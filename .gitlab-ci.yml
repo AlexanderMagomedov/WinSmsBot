@@ -1,0 +1,41 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  GIT_STRATEGY: clone
+
+.docker_login: &docker_login
+  - echo "${DOCKER_KEY}" | docker login --username ${DOCKER_USER} --password-stdin ${CONTAINER_REGISTRY}
+
+
+.common:
+  only:
+    - master
+  tags:
+    - back
+
+
+build:
+  stage: build
+  before_script:
+    - *docker_login
+  script:
+    - docker build --network host -t $CI_REGISTRY_IMAGE .
+    - docker push $CI_REGISTRY_IMAGE
+  extends: .common
+
+deploy:
+  stage: deploy
+  image: docker:25.0.5-git
+  dependencies:
+    - build
+  before_script:
+    - *docker_login
+  script:
+    - docker pull $CI_REGISTRY_IMAGE
+    - docker-compose up -d --build
+  after_script:
+    - sleep 15
+    - docker system prune -f -a || true
+  extends: .common
