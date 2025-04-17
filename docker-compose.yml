@@ -6,7 +6,8 @@ services:
     container_name: telegram_bot
     restart: unless-stopped
     env_file:
-      - .env
+      - $env
+
     volumes:
       - .:/app
     command: python startbot.py
