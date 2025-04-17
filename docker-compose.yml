@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   telegram_bot:
-    image: registry.gitlab.com/username/projectname/bot:latest  # замените на своё имя образа
+    image: ${CI_REGISTRY_IMAGE}
     deploy:
       restart_policy:
         condition: on-failure
